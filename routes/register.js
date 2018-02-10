@@ -1,19 +1,15 @@
-module.exports = function (app) {
+const bodyParser = require('body-parser');
+const urlencodedBodyParser = bodyParser.urlencoded({ extended: false });
 
-  const http = require('http');
-  const httpServer = http.createServer(app);
-  const io = require('socket.io');
-  const realtimeServer = io(httpServer);
-  const bodyParser = require('body-parser');
-  const urlencodedBodyParser = bodyParser.urlencoded({ extended: false });
+module.exports = function (app) {
+  const db = app.get('db');
+  const users = db.collection("users");
+
   // Render the register page on request
   app.get('/register', (req, res) => {
     // Send along Session Data
     res.render('register', { session: req.session });
-  })
-
-  const db = app.get('db')
-  const users = db.collection("users");
+  });
 
   // When the Register form is posted, this function will run
   app.post('/register', urlencodedBodyParser, async(req, res) =>{
@@ -48,5 +44,5 @@ module.exports = function (app) {
         console.log("Passwords do not match");
       }
     }
-  })
+  });
 };
