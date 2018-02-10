@@ -1,11 +1,9 @@
-module.exports = function (app) {
+const bodyParser = require('body-parser');
+const urlencodedBodyParser = bodyParser.urlencoded({ extended: false });
 
-  const http = require('http');
-  const httpServer = http.createServer(app);
-  const io = require('socket.io');
-  const realtimeServer = io(httpServer);
-  const bodyParser = require('body-parser');
-  const urlencodedBodyParser = bodyParser.urlencoded({ extended: false });
+module.exports = function (app) {
+  const db = app.get('db');
+  const users = db.collection("users");
 
   app.post('/log-in', urlencodedBodyParser, async(req, res) =>{
     let user = req.body.username;
@@ -14,8 +12,6 @@ module.exports = function (app) {
     if(!user || !pass){
       window.console.log('A field was left empty');
     }else{
-      const db = app.get('db')
-      const users = db.collection("users");
       //Check for user in db
       const user_exists_check = await users.findOne({username: user, password: pass});
       //If user exists, assign them a session

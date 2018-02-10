@@ -4,5 +4,5 @@ module.exports = function (app) {
     // Destroy Session Data
     req.session.destroy()
     res.redirect('back')
-  })
+  });
 };

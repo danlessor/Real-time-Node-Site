@@ -3,5 +3,5 @@ module.exports = function (app) {
   app.get('/', (req, res) => {
     // Send along Session Data
     res.render('index', { session: req.session });
-  })
+  });
 };
