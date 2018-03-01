@@ -1,5 +1,11 @@
+const http = require('http');
+const express = require('express');
 const bodyParser = require('body-parser');
 const urlencodedBodyParser = bodyParser.urlencoded({ extended: false });
+const io = require('socket.io');
+const app = express();
+const httpServer = http.createServer(app);
+const realtimeServer = io(httpServer);
 
 module.exports = function (app) {
   const db = app.get('db');
