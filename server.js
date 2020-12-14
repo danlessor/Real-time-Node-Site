@@ -42,6 +42,7 @@ mongodb.connect(url, function(err, client) {
   realtimeServer.on('connect', function (socket) {
     // A client has connected to the realtime server.
     socket.on('want-users-list', async function () {
+      console.log('User List Requested from Server');
       // This client is asking for users list data. Ok.
       const usersList = await users.find().toArray();
       socket.emit('users-list', usersList);

@@ -1,4 +1,4 @@
-console.log('Hello');
+console.log('Client-admin.js has been invoked');
 const socket = io();
 
 // Ask server for users data
