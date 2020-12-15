@@ -12,13 +12,19 @@ module.exports = function (app) {
   const traffic = db.collection("traffic");
 
   // Render the index page on request
-  app.get('/', (req, res) => {
+  app.get('/', async (req, res) => {
+    let newTraffic = {
+      visitTime: new Date()
+    }
     // Notify DB the user has visited this page
 
-    async() =>{
-      await traffic.insert({username: req.session.username});
-      console.log('Traffic Log Updated')
+    if (req.session.username) {
+      newTraffic.username = req.session.username
+    } else {
+      newTraffic.username = 'Guest'
     }
+
+    await traffic.insert(newTraffic);
 
     // Send along Session Data
     res.render('index', { session: req.session });
