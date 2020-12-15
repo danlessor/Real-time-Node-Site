@@ -17,16 +17,18 @@ module.exports = function (app) {
       visitTime: new Date()
     }
     // Notify DB the user has visited this page
-
     if (req.session.username) {
       newTraffic.username = req.session.username
     } else {
       newTraffic.username = 'Guest'
     }
-
     await traffic.insert(newTraffic);
 
+    const pastDate = new Date(new Date().setDate)
+    const onlineUsersList = await traffic.find({"visitTime": {$gt:new Date(Date.now() - 24*60*60)}});
+    console.log(onlineUsersList);
+
     // Send along Session Data
-    res.render('index', { session: req.session });
+    res.render('index', { session: req.session, onlineUsersList: onlineUsersList});
   });
 };
